@@ -1,0 +1,33 @@
+%nav.navbar.navbar-default
+  .container-fluid.navbar-container
+    .navbar-header
+      %button.navbar-toggle.collapsed{"data-target" => "#bs-navbar-collapse-1", "data-toggle" => "collapse", type: "button"}
+        %span.sr-only Toggle Navigation
+        %span.icon-bar
+        %span.icon-bar
+      .navbar-left
+        =link_to (image_tag "Icon.png", :style => "height: 60px; padding-right:10px"), root_path
+        =link_to "QuizApp", root_path
+    .collapse.navbar-collapse#bs-navbar-collapse-1
+      %ul.nav.navbar-nav.navbar-right
+        - if admin_signed_in?
+          %li
+            = link_to "ADMIN Home", rails_admin_path
+          %li
+            = link_to "ADMIN Logout", destroy_admin_session_path, method: :delete
+        - if user_signed_in?
+          %li
+            = link_to "Home", root_path
+          %li
+            = link_to "My Profile", profile_index_path
+          %li
+            = link_to "LeaderBoard", leaderboard_index_path
+          %li
+            = link_to "My Quizzes", myquizzes_path
+          %li
+            = link_to "Logout", destroy_user_session_path, method: :delete
+        - else
+          %li
+            = link_to "Login", new_user_session_path
+          %li
+            = link_to "Register", new_user_registration_path

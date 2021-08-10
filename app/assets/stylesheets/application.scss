@@ -1,0 +1,201 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ */
+@import "bootstrap-sprockets";
+@import "bootstrap";
+.row{
+	margin-left: 20px;
+}
+body{
+	background: #ff6a32;
+	margin: 0;
+	height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+@import url(https://fonts.googleapis.com/css?family=Raleway:400,700);
+
+.navbar-right {
+  margin-top: 5px;
+}
+.container {
+	flex-grow: 1;
+  display:flex;
+  width: 100%;
+  flex-direction:column;
+}
+.form-container{
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: rgba(0, 0, 0, 0);
+  font-family: Raleway;
+  color: white;
+  letter-spacing: 1px;
+  margin: auto;
+}
+.content-holder {
+  width: 70%;
+  padding: 40px;
+  margin: 10px auto 30px;
+  min-height: 90%;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 27px 55px 0 rgba(0, 0, 0, 0.3), 0 17px 17px 0 rgba(0, 0, 0, 0.15);
+}
+
+.card-form{
+  width: 400px;
+  border-radius: 10px;
+  background: white;
+  box-shadow: 0 27px 55px 0 rgba(0, 0, 0, 0.3), 0 17px 17px 0 rgba(0, 0, 0, 0.15);
+  
+  .form-title{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+    font-size: 20px;
+    font-weight: bold;
+    background: #27ae60;
+    border-radius: 10px 10px 0 0;
+  }
+  
+  .form-body{
+    padding: 10px;
+    
+    .form-row{
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      label{
+        color: black;
+      }
+      input[type=email], input[type=password], input[type=text]{
+        appearance: none;
+        width: 100%;
+        margin: 0 15px;
+        height: 35px;
+        padding: 5px 15px;
+        border-radius: 5px;
+        outline: none;
+        border: none;
+        background: #e8ebed;
+        color: #576366;
+        font-size: 14px;
+      }
+      .form-error {
+        color: red !important;
+      }
+    }
+    .field label {
+      padding: 10px;
+      color:black;
+    }
+  }
+  
+  .rule{
+    height: 2px;
+    background: #e8ebed;
+    margin: 0px 10px;
+  }
+  
+  .form-footer{
+    padding: 15px 20px;
+    
+    input[type=submit]{
+      display: inline-block;
+      height: 40px;
+      color:white;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 15px;
+      background: #27ae60;
+      margin-right: 10px;
+      font-size: 14px;
+    }
+
+    span{
+      margin-left: 8px;
+    }
+  }
+  .links-row{
+    padding: 10px;
+    font-weight: bold;
+  }
+  .delete-button{
+    display: inline-block;
+    height: 40px;
+    color:white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 15px;
+    background: red !important;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+  .black-text {
+    color: black;
+  }
+}
+
+.quiz-options {
+  input.check { position: fixed; left:-100px;}
+  input.check + label[for].check {
+    cursor: pointer;
+    color: #999; font-weight: 700;
+    font-size: 20px; font-family: Arial;
+    border: 1px solid #CCC;
+    padding: 5px;
+  }
+  input.check + label[for].check:after {
+    content: "";
+    display: inline-block; width: 35px; height: 15px; 
+    vertical-align: middle; text-align: right;
+    margin: 0 5px 0 10px;
+    line-height: 0.7em;
+    background-position: left;
+  }
+  
+  /* Checked */
+  input:checked + label[for].check:after {
+    color: #333;
+    content:"✔";
+  }
+  
+  /* Focus */
+  input:focus + label[for].check {
+    border-color: #6FABE7;
+  }
+  
+  /* Hover */
+  input + label[for].check:hover {
+    border-color: #6FABE7;
+  }
+  
+  /* Hover (unchecked) */
+  input:not(:checked) + label[for].check:hover:after {
+    color: #DDD;
+    content:"✔";
+  }
+  
+  /* Hover (checked) */
+  input:checked + label[for].check:hover:after {
+    color: #6FABE7;
+    content:"✔";
+  }
+}
