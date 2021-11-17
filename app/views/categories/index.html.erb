@@ -4,6 +4,9 @@
     <%= will_paginate @categories, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
   </div>
 </div>
+<% if logged_in? && current_user.admin? %><!--Show new quiz button only for admins-->
+  <%= link_to 'New Category', new_category_path, class: 'btn btn-primary btn-sm' %>
+<% end %>
 <% @categories.each do |category| %>
 	<div class="row">
 		<div class="col-md-4 offset-md-4 alert alert-secondary text-center clickable" onclick="window.location='<%= category_path(category) %>'">

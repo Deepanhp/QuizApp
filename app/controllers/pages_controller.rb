@@ -8,4 +8,7 @@ class PagesController < ApplicationController
 
   def faq
   end
+
+  def upload_quiz
+  end
 end

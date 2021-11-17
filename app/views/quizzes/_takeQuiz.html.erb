@@ -60,7 +60,7 @@
 							<% end %>
 						<% end %>
 						<% if found==true && count>=2 %><!--Display button for valid questions only-->
-								<button class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="#collapse<%="#{i}"%>" aria-expanded="true" aria-controls="collapse<%="#{i}"%>"><%= i %></button>
+								<button class="btn btn-danger btn-sm" type="button" data-toggle="collapse" data-target="#collapse<%="#{i}"%>" aria-expanded="true" aria-controls="collapse<%="#{i}"%>" id="number-id-<%="#{i}"%>"><%= i %></button>
 							<% i+=1 %>
 						<% end %>
 
@@ -106,7 +106,7 @@
 													<div class="col-md-5 my-1 ml-1 text-center border border-light grey-back pt-1">
 														<h3>
 															<span class="btn btn-primary btn-sm option-btn"><!--Select option as radio button-->
-																<%= q.radio_button :option, each_option.opt_name %>
+																<%= q.radio_button :option, each_option.opt_name, onClick: "toggleItemColor(#{j})" %>
 																<%= q.label :option, each_option.opt_name, :value => each_option.opt_name %>
 															</span>
 														</h3>
@@ -120,10 +120,10 @@
 							<% end %>
 							<div class="text-center mt-4 mb-3">
 								<% if j!=1 %>
-									<button class="btn btn-secondary btn-sm" type="button" data-toggle="collapse" data-target="#collapse<%="#{j-1}"%>" aria-expanded="true" aria-controls="collapse<%="#{j-1}"%>">Prev Question</button>
+									<button class="btn btn-secondary btn-sm prev-next" type="button" data-toggle="collapse" data-target="#collapse<%="#{j-1}"%>" aria-expanded="true" aria-controls="collapse<%="#{j-1}"%>">Prev Question</button>
 								<% end %>&nbsp;
 								<% if j!=i-1 %>
-									<button class="btn btn-secondary btn-sm" type="button" data-toggle="collapse" data-target="#collapse<%="#{j+1}"%>" aria-expanded="true" aria-controls="collapse<%="#{j+1}"%>">Next Question</button>
+									<button class="btn btn-secondary btn-sm prev-next" type="button" data-toggle="collapse" data-target="#collapse<%="#{j+1}"%>" aria-expanded="true" aria-controls="collapse<%="#{j+1}"%>">Next Question</button>
 								<% end %>
 							</div>
 						</div>
@@ -140,3 +140,11 @@
 	</div>
 
 <% end %>
+
+<script>
+function toggleItemColor(y) {
+  console.log(y)
+  $("#number-id-"+y).removeClass("btn-danger")
+  $("#number-id-"+y).addClass("btn-success")
+}
+</script>

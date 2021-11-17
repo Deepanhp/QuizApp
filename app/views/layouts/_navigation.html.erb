@@ -20,6 +20,11 @@
           <%= link_to 'Users', users_path, class: "nav-link" %>
         </li>
       <% end %>
+      <% if logged_in? and current_user.admin? %>
+        <li class="nav-item">
+          <%= link_to('Upload Quiz', {:controller => 'pages', :action => 'upload_quiz'}, class: "nav-link") %>
+        </li>
+      <% end %>
     </ul>
 
     <ul class="navbar-nav">

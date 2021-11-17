@@ -5,6 +5,8 @@ Rails.application.routes.draw do
 
   get 'faq' => 'pages#faq'
 
+  get 'upload_quiz' => 'pages#upload_quiz'
+
   get 'login', to: 'sessions#new'
 
   post 'login', to: 'sessions#create'

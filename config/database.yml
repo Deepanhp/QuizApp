@@ -13,11 +13,11 @@ development:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: <%= ENV["MYSQL_DATABASE"] %>
+  database: quizdb
   pool: 5
-  username: <%= ENV["MYSQL_USERNAME"] %>
-  password: <%= ENV["MYSQL_PASSWORD"] %>
-  hostname: <%= ENV["MYSQL_SERVER"] %>
+  username: newuser
+  password: password
+  socket: /var/run/mysqld/mysqld.sock
 
 
 # Warning: The database defined as "test" will be erased and
