@@ -29,11 +29,5 @@ test:
   database: db/test.sqlite3
  
 production:
-  adapter: mysql2
-  encoding: utf8
-  reconnect: false
-  database: <%= ENV["MYSQL_DATABASE"] %>
-  pool: 5
-  username: <%= ENV["MYSQL_USERNAME"] %>
-  password: <%= ENV["MYSQL_PASSWORD"] %>
-  hostname: <%= ENV["MYSQL_SERVER"] %>
+  url: <%= ENV['DATABASE_URL'] %>
+  
