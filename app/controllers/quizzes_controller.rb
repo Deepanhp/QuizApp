@@ -6,10 +6,15 @@ class QuizzesController < ApplicationController
   def index
     if logged_in? and current_user.admin?
       @quizzes = Quiz.paginate(page: params[:page], per_page: 6)
+      @submissions = Submission.all
+    elsif logged_in?
+      @quizzes = Quiz.where(id: Question.select("quiz_id").group(:quiz_id).having("count(id)>1")).paginate(page: params[:page], per_page: 6)
+      @submissions = current_user.submissions
+      @submitted_quizzes = Quiz.joins(:submissions).where(id: @submissions.pluck(:quiz_id))
     else
       @quizzes = Quiz.where(id: Question.select("quiz_id").group(:quiz_id).having("count(id)>1")).paginate(page: params[:page], per_page: 6) #Only send quizzes with more than 1 question
     end
-     @submissions = Submission.all   
+        
   end
   def new
     @quiz = Quiz.new
@@ -107,6 +112,12 @@ class QuizzesController < ApplicationController
     else
       @option_messages = ""
     end
+  end
+
+  def sync_quiz
+    Spreadsheet.run
+    flash[:success] = "Quiz synced successfully"
+    redirect_to upload_quiz_path
   end
 
   private

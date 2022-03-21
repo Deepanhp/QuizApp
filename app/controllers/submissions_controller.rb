@@ -9,9 +9,9 @@ class SubmissionsController < ApplicationController
 	def create
 		@submission = Submission.new(submission_params)
 		old_submission = Submission.where(user_id: @submission.user_id, quiz_id: @submission.quiz_id) #All old submission by the same user and for the same quiz
-		old_submission.each do |old_sub|
-			old_sub.destroy
-		end
+		# old_submission.each do |old_sub|
+		# 	old_sub.destroy
+		# end
 	    if @submission.save
 	        flash[:success] = "Quiz was submitted succesfully"
 	        total_score=0

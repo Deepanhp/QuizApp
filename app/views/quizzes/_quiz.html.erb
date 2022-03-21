@@ -5,9 +5,7 @@
       <tr>
         <th scope="col">Name</th>
         <th scope="col">Total Score</th>
-        <% if type=="Submission" %>
-          <th scope="col">User's Score</th>
-        <% end %>
+        <th scope="col">Your Score</th>
         <th scope="col">Number of questions</th>
         <% if type=="Submission" %>
           <th scope="col">Time</th>
@@ -74,17 +72,15 @@
                   <% end %>
               </td>
             <% elsif logged_in?  %><!--For logged in users-->
+              <% already_submitted = (@submitted_quizzes.include? quiz) %>
+              <% if already_submitted %>
+                <% quiz_score = @submissions.find_by_quiz_id(quiz.id).try(:score) %>
+              <% end %>
               <td><%= quiz.name %></td>
               <td><%= tscore %></td>
-              <% if type=="Submission" %>
-                <% @submissions.each do |sub| %><!--Display score for each submission-->
-                  <% if sub.quiz_id==quiz.id %>
-                    <td>
-                      <%= sub.score %>
-                    </td>
-                  <% end %>
-                <% end %>
-              <% end %>
+              <td>
+                <%= quiz_score || "--" %>
+              </td>
               <td><%= quest_count %></td>
               <% if type=="Submission" %>
                 <% @submissions.each do |sub| %><!--Display time ago for each submission-->
@@ -96,8 +92,10 @@
                 <% end %>
               <% end %>
               <td>
-                <% if quest_count>1 %>
+                <% unless already_submitted %>
                   <%= link_to 'Take Quiz', quiz_path(quiz), class: "btn btn-success btn-sm" %>
+                <% else %>
+                  <%= "Done"%>
                 <% end %>
               </td>
             <% elsif !logged_in?  %><!--For not logged in users-->

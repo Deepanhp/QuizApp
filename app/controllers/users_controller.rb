@@ -58,6 +58,7 @@ class UsersController < ApplicationController
 		end
 		@quizzes = Quiz.where(id: Submission.select(:quiz_id).where(user_id: @user.id))
 		@submissions = Submission.where(user_id: @user.id)
+    @submitted_quizzes = Quiz.joins(:submissions).where(id: @submissions.pluck(:quiz_id))
 	end
 
 	def editPassword
