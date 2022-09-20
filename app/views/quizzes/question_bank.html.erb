@@ -1,0 +1,25 @@
+<% if @questions.length()<2 %><!--Show alert if there are less than 2 questions-->
+	<div class="alert alert-danger" role="alert">
+		This quiz has less than 2 questions!
+	</div>
+<% end %>
+<%= render 'questions_errors' %><!--Render error messages of questions if any-->
+
+<%= render 'options_errors' %><!--Render error messages of options if any-->
+
+<div class="row mt-4 text-center">
+	<div class="col-md-5 offset-md-1 col-sm-5 offset-sm-1 col-5 offset-1 border border-primary alert alert-primary">
+		<h4>Number of questions</h4>
+		<span class="display-3"><%= @questions.length() %></span>
+	</div>
+	<div class="col-md-5 col-sm-5 col-5 border border-left-0 border-primary alert alert-primary">
+		<h4>Total Score</h4>
+		<span class="display-3"><%= @total_score %></span>
+	</div>
+</div>
+	
+
+<!--Question List -->
+<div class="px-5">
+	<%= render 'question_list' %>
+</div>

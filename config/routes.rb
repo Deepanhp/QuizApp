@@ -7,6 +7,10 @@ Rails.application.routes.draw do
 
   get 'upload_quiz' => 'pages#upload_quiz'
 
+  post 'sync_quiz' => 'quizzes#sync_quiz'
+
+  get 'question_bank' => 'quizzes#question_bank'
+
   get 'login', to: 'sessions#new'
 
   post 'login', to: 'sessions#create'

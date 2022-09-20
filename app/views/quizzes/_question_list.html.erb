@@ -1,7 +1,9 @@
 <p>
 	<% if @question_all.present? %>
 		<br>
-		<h5 class="mb-2">Questions in the quiz: <%= @quiz.name %></h5>
+		<% if @quiz.present? %>
+			<h5 class="mb-2">Questions in the quiz: <%= @quiz.name %></h5>
+		<% end %>
 		<div class="d-flex mt-3">
 		  <div class="mx-auto">
 		    <%= will_paginate @question_all, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
@@ -25,7 +27,7 @@
 					<% end %>
 					<a class="btn btn-link list-group-item list-group-item-action" data-toggle="collapse" href="#collapseQuestion-<%="#{each_question.id}"%>" role="button" aria-expanded="false" aria-controls="collapseQuestion">
 				    	<%= each_question.questions %>
-				    	<% if found == false || count<=1  %><!--If question does not have answer or has less than 2 options-->
+				    <% if found == false || count<=1  %><!--If question does not have answer or has less than 2 options-->
 					  	<span class="float-right alert-icon font-weight-bold pr-4">
 					  		<%= fa_icon "exclamation", class: "fa-2x" %><!--display error icon-->
 					  	</span>
