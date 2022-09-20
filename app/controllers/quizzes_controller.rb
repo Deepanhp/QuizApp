@@ -120,6 +120,26 @@ class QuizzesController < ApplicationController
     redirect_to upload_quiz_path
   end
 
+  def question_bank
+    @questions = Question.all #Questions of the quiz
+    @question_all = @questions.paginate(page: params[:page], per_page: 10) #questions paginated
+    @total_score = @questions.sum(:score) #Total score of all the questions in the quiz
+    @option = Option.new
+    @option_all = Option.where(question_id: @questions) #All options of the quiz
+
+    @question = Question.new
+    if params.has_key?(:question_messages) #Check if error messages are passed and display them
+      @question_messages = params[:question_messages] 
+    else
+      @question_messages = ""
+    end
+    if params.has_key?(:option_messages)
+      @option_messages = params[:option_messages] 
+    else
+      @option_messages = ""
+    end 
+  end
+
   private
 
   def quiz_params

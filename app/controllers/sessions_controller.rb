@@ -9,9 +9,15 @@ class SessionsController < ApplicationController
 	def create
 		user = User.find_by(email: params[:session][:email].downcase)
 		if user && user.authenticate(params[:session][:password])
-			session[:user_id] = user.id
-			flash[:success] = "You have successfully logged in"
-			redirect_to user_path(user)
+			if !user.active_session_exists
+				session[:user_id] = user.id
+				user.update(active_session_exists: true)
+				flash[:success] = "You have successfully logged in"
+				redirect_to user_path(user)
+			else
+				flash[:success] = "You have active login session"
+				redirect_to root_path
+			end
 		else
 			flash.now[:danger] = "There was something wrong with your login information"
 			render 'new'
@@ -19,6 +25,8 @@ class SessionsController < ApplicationController
 	end
 
 	def destroy
+		user = User.find_by(id: session[:user_id])
+		user.update(active_session_exists: false)
 		session[:user_id] = nil
 		flash[:success] = "You have logged out"
 		redirect_to root_path

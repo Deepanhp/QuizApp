@@ -9,6 +9,8 @@ Rails.application.routes.draw do
 
   post 'sync_quiz' => 'quizzes#sync_quiz'
 
+  get 'question_bank' => 'quizzes#question_bank'
+
   get 'login', to: 'sessions#new'
 
   post 'login', to: 'sessions#create'

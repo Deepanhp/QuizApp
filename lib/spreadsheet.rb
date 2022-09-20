@@ -23,23 +23,16 @@ class Spreadsheet
 		# Get the first worksheet
 		worksheet = spreadsheet.worksheets.first
 		# Validate presence of quiz name
-		quiz_name = worksheet["B1"]
-		quiz_category = worksheet["B2"]
-		unless quiz_name.present?
-			worksheet["C1"] = "Upload failed. Quiz name cannot be blank"
-			worksheet.save and return
-
-		end
-
-		@quiz = Quiz.create!(name: quiz_name +" - #{Date.today.to_s}")
-		# iterate each row and upload data
+		# quiz_name = worksheet["B1"]
+		# quiz_category = worksheet["B2"]
+			# @quiz = Quiz.create!(name: quiz_name +" - #{Date.today.to_s}")
+			# iterate each row and upload data
 		(START_ROW..worksheet.rows.count).each do |row|
 			begin
 				question = worksheet[row, QUESTION_COLUMN]
 				score = worksheet[row, SCORE_COLUMN] || DEFAULT_SCORE
-				question = Question.create!(questions: question, score: score, quiz_id: @quiz.id)
+				question = Question.create!(questions: question, score: score)
 				(1..4).each do |index|
-					binding.pry
 					is_answer = (worksheet[HEADER_ROW, index + 2] == worksheet[row, ANSWER_COLUMN])
 					Option.create!(opt_name: worksheet[row, index + 2], question_id: question.id, is_answer: is_answer)
 				end
@@ -48,6 +41,7 @@ class Spreadsheet
 			rescue Exception => e
 				worksheet[row, STATUS_COLUMN] = "Failed"
 				worksheet[row, STATUS_MESSAGE_COLUMN] = e.message
+				worksheet.set_background_color(row, 1, 1, 1, GoogleDrive::Worksheet::Colors::DARK_RED_1)
 				worksheet.save
 				next
 			end
