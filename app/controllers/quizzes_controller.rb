@@ -1,3 +1,4 @@
+require 'upload_quiz_old'
 class QuizzesController < ApplicationController
 
   before_action :require_user, except: [:index]
