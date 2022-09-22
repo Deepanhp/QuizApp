@@ -1,3 +1,4 @@
+require 'opt_sms'
 class SessionsController < ApplicationController
 	#Deals with authentication
 	before_action :require_user, only: [:destroy, :loginVerifyOtp]
