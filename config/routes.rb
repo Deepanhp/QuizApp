@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   get 'login', to: 'sessions#new'
 
   post 'login', to: 'sessions#create'
+  post 'loginVerifyOtp', to: 'sessions#loginVerifyOtp'
 
   delete 'logout', to: 'sessions#destroy'
   
@@ -30,6 +31,7 @@ Rails.application.routes.draw do
   get 'signup', to: 'users#new'
 
   resources:users, except:[:new]
+  post 'verifyOtp', to: 'users#verifyOtp'
   
   get 'question/edit' => 'quizzes#editQuestion'
 
