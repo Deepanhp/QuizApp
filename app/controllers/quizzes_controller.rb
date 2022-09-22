@@ -115,7 +115,7 @@ class QuizzesController < ApplicationController
   end
 
   def sync_quiz
-    ::UploadQuizOld.run
+    UploadQuizOld.run
     flash[:success] = "Quiz synced successfully"
     redirect_to upload_quiz_path
   end
