@@ -23,7 +23,6 @@ class UsersController < ApplicationController
 					UserMailer.send_otp_email(@user, otp).deliver_now
 					#remove after deployment
 					response = OtpSms.send_otp(otp, @user.phone)
-					puts "responseeeeeeeeeeeeee  #{response}  eeeeeeeeeeeeeeeeee"
 
 					if response["return"]
 						flash[:success] = response["message"][0]
@@ -52,7 +51,7 @@ class UsersController < ApplicationController
 	end
 
 	def verifyOtp
-		if  current_user.authenticate_otp(params[:user][:otp])
+		if current_user.authenticate_otp(params[:user][:otp], drift: 120)
 			flash[:success] = "Welcome to the quiz app, #{current_user.username}"
 			redirect_to user_path(current_user)
 		else

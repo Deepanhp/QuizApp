@@ -47,7 +47,7 @@ class SessionsController < ApplicationController
 	end
 
 	def loginVerifyOtp
-		if  current_user.authenticate_otp(params[:user][:otp])
+		if  current_user.authenticate_otp(params[:user][:otp], drift: 120)
 			current_user.update(active_session_exists: true)
 			flash[:success] = "You have successfully logged in"
 			redirect_to user_path(current_user)

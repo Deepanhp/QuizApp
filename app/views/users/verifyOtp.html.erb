@@ -13,9 +13,10 @@
 			<div class="form-group text-center">
 					<%= f.submit "Verify OTP", class: 'btn btn-primary btn-lg' %>
 			</div>
+			<div><p>OTP is valid for next two minutes</p></div>
 		<% end %>
 		<div class="text-center">
-			[ <%= link_to "Cancel request and return to profile page", user_path(current_user) %> ]
+			[ <%= link_to "Back to log in", logout_path, method: :delete %> ]
 		</div>
 	</div>
 </div>
