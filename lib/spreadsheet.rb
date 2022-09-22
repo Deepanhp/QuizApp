@@ -1,8 +1,4 @@
 class Spreadsheet
-	# require 'bundler'
-	require 'pry'
-	# Bundler.require
-
 	#constants
 	DEFAULT_SCORE = 1
 	HEADER_ROW = 5
@@ -23,28 +19,34 @@ class Spreadsheet
 		# Get the first worksheet
 		worksheet = spreadsheet.worksheets.first
 		# Validate presence of quiz name
-		# quiz_name = worksheet["B1"]
-		# quiz_category = worksheet["B2"]
-			# @quiz = Quiz.create!(name: quiz_name +" - #{Date.today.to_s}")
+		quiz_name = worksheet["B1"]
+		quiz_category = worksheet["B2"]
+		begin
+			@quiz = Quiz.create!(name: quiz_name +" - #{Date.today.to_s}")
 			# iterate each row and upload data
-		(START_ROW..worksheet.rows.count).each do |row|
-			begin
-				question = worksheet[row, QUESTION_COLUMN]
-				score = worksheet[row, SCORE_COLUMN] || DEFAULT_SCORE
-				question = Question.create!(questions: question, score: score)
-				(1..4).each do |index|
-					is_answer = (worksheet[HEADER_ROW, index + 2] == worksheet[row, ANSWER_COLUMN])
-					Option.create!(opt_name: worksheet[row, index + 2], question_id: question.id, is_answer: is_answer)
+			(START_ROW..worksheet.rows.count).each do |row|
+				begin
+					question = worksheet[row, QUESTION_COLUMN]
+					score = worksheet[row, SCORE_COLUMN] || DEFAULT_SCORE
+					question = Question.create!(questions: question, score: score)
+					question.quizzes << @quiz
+					(1..4).each do |index|
+						is_answer = (worksheet[HEADER_ROW, index + 2] == worksheet[row, ANSWER_COLUMN])
+						Option.create!(opt_name: worksheet[row, index + 2], question_id: question.id, is_answer: is_answer)
+					end
+					worksheet[row, STATUS_COLUMN] = "Success"
+					worksheet.save
+				rescue Exception => e
+					worksheet[row, STATUS_COLUMN] = "Failed"
+					worksheet[row, STATUS_MESSAGE_COLUMN] = e.message
+					worksheet.save
+					next
 				end
-				worksheet[row, STATUS_COLUMN] = "Success"
-				worksheet.save
-			rescue Exception => e
-				worksheet[row, STATUS_COLUMN] = "Failed"
-				worksheet[row, STATUS_MESSAGE_COLUMN] = e.message
-				worksheet.set_background_color(row, 1, 1, 1, GoogleDrive::Worksheet::Colors::DARK_RED_1)
-				worksheet.save
-				next
 			end
+		rescue Exception => e
+			worksheet.set_background_color(1, 2, 1, 1, GoogleDrive::Worksheet::Colors::DARK_RED_1)
+			worksheet[1, 3] = e.message
+			worksheet.save
 		end
 	end
 end
