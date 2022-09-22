@@ -8,14 +8,14 @@ class QuizzesController < ApplicationController
       @quizzes = Quiz.paginate(page: params[:page], per_page: 6)
       @submissions = Submission.all
     elsif logged_in?
-      @quizzes = Quiz.where(id: Question.select("quiz_id").group(:quiz_id).having("count(id)>1")).paginate(page: params[:page], per_page: 6)
+      @quizzes = Quiz.where(id: QuestionsQuiz.select("quiz_id").group(:quiz_id).having("count(id)>1")).paginate(page: params[:page], per_page: 6)
       @submissions = current_user.submissions
       @submitted_quizzes = Quiz.joins(:submissions).where(id: @submissions.pluck(:quiz_id))
     else
-      @quizzes = Quiz.where(id: Question.select("quiz_id").group(:quiz_id).having("count(id)>1")).paginate(page: params[:page], per_page: 6) #Only send quizzes with more than 1 question
-    end
-        
+      @quizzes = Quiz.where(id: QuestionsQuiz.select("quiz_id").group(:quiz_id).having("count(id)>1")).paginate(page: params[:page], per_page: 6) #Only send quizzes with more than 1 question
+    end        
   end
+
   def new
     @quiz = Quiz.new
   end
@@ -48,7 +48,7 @@ class QuizzesController < ApplicationController
 
   def show
     @quiz = Quiz.find(params[:id])
-    @questions = Question.where(quiz_id: params[:id].to_i) #Questions of the quiz
+    @questions = @quiz.questions #Questions of the quiz
     @question_all = @questions.paginate(page: params[:page], per_page: 5) #questions paginated
     @total_score = @questions.sum(:score) #Total score of all the questions in the quiz
     @option = Option.new
@@ -115,7 +115,7 @@ class QuizzesController < ApplicationController
   end
 
   def sync_quiz
-    Spreadsheet.run
+    UploadQuizOld.run
     flash[:success] = "Quiz synced successfully"
     redirect_to upload_quiz_path
   end

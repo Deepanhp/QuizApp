@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 
 	before_action :require_user, except: [:new, :create]
+	before_action :require_admin, only: [:new, :create]
 
 	def index
 		@users = User.paginate(page: params[:page], per_page: 6)
