@@ -13,17 +13,7 @@ class SessionsController < ApplicationController
 				session[:user_id] = user.id
 				otp = user.otp_code
 				if Rails.env == 'development' || Rails.env == 'test'
-					UserMailer.send_otp_email(user, otp).deliver_now
-					#remove after deployment
-					response = OtpSms.send_otp(otp, user.phone)
-					if response["return"]
-						flash[:success] = response["message"][0]
-					else
-					 	user.destroy
-						user = nil
-						flash[:danger] = "Sending OTP failed, Please retry signing up"
-						redirect_to root_path
-					end
+					UserMailer.send_otp_email(user, otp).deliver_now					
 				else
 					response = OtpSms.send_otp(otp, user.phone)
 					if response["return"]
@@ -36,10 +26,10 @@ class SessionsController < ApplicationController
 					end
 				end
 				render 'loginVerifyOtp'
-			else
-				flash[:success] = "You have active login session"
-				redirect_to root_path
-			end
+			# else
+			# 	flash[:success] = "You have active login session"
+			# 	redirect_to root_path
+			# end
 		else
 			flash.now[:danger] = "There was something wrong with your login information"
 			render 'new'
