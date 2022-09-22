@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
 	def create
 		user = User.find_by(email: params[:session][:email].downcase)
 		if user && user.authenticate(params[:session][:password])
-			if !user.active_session_exists
+			# if !user.active_session_exists
 				session[:user_id] = user.id
 				otp = user.otp_code
 				if Rails.env == 'development' || Rails.env == 'test'

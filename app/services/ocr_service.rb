@@ -1,4 +1,4 @@
-require 'pry'
+# require 'pry'
 class OcrService < BaseService
 	attr_reader :file_path, :options, :text_array
 
