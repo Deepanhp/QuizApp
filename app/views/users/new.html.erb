@@ -20,6 +20,12 @@
 			</div>
 			<div class="form-group">
 				<h5 class="font-weight-normal">
+					<%= f.label :phone %>
+				</h5>
+					<%= f.telephone_field :phone, max: 10, class: "form-control", placeholder: "Enter phone" %>
+			</div>
+			<div class="form-group">
+				<h5 class="font-weight-normal">
 					<%= f.label :password %>
 				</h5>
 					<%= f.password_field :password, class: "form-control", placeholder: "Enter password" %>

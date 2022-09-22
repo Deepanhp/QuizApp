@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20220921204412) do
+ActiveRecord::Schema.define(version: 20220922095235) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(version: 20220921204412) do
     t.boolean "admin", default: false
     t.boolean "active_session_exists"
     t.string "otp_secret_key"
+    t.string "phone"
   end
 
   add_foreign_key "options", "questions"

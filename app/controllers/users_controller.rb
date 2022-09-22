@@ -18,7 +18,32 @@ class UsersController < ApplicationController
 			@user = User.new(user_params)
 			if @user.save
 				session[:user_id] = @user.id
-				UserMailer.send_otp_email(@user).deliver_now
+				otp = @user.otp_code
+				if Rails.env == 'development' || Rails.env == 'test'
+					UserMailer.send_otp_email(@user, otp).deliver_now
+					#remove after deployment
+					response = OtpSms.send_otp(otp, @user.phone)
+					puts "responseeeeeeeeeeeeee  #{response}  eeeeeeeeeeeeeeeeee"
+
+					if response["return"]
+						flash[:success] = response["message"][0]
+					else
+					 	@user.destroy
+						@user = nil
+						flash[:danger] = "Sending OTP failed, Please retry signing up"
+						redirect_to root_path
+					end
+				else
+					response = OtpSms.send_otp(otp, @user.phone)
+					if response["return"]
+						flash[:success] = response["message"][0]
+					else
+					 	@user.destroy
+						@user = nil
+						flash[:danger] = "Sending OTP failed, Please retry signing up"
+						redirect_to root_path
+					end
+				end
 				render 'verifyOtp'
 			else
 				render 'new'
@@ -119,7 +144,7 @@ class UsersController < ApplicationController
 	private
 
 	def user_params
-		params.require(:user).permit(:username, :email, :password, :otp)
+		params.require(:user).permit(:username, :email, :password, :phone, :otp)
 	end
 
 
