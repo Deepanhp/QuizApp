@@ -103,13 +103,11 @@
 											<!--@option_all contains all options of the quiz-->
 											<% @option_all.each do |each_option| %>
 												<% if each_option.question_id == each_question.id %><!--Display options of this question-->
-													<div class="col-md-5 my-1 ml-1 text-center border border-light grey-back pt-1">
-														<h3>
+													<div class="col-md-5 my-1 ml-1 text-center border border-light grey-back pt-1 button-col">
 															<span class="btn btn-primary btn-sm option-btn"><!--Select option as radio button-->
 																<%= q.radio_button :option, each_option.opt_name, onClick: "toggleItemColor(#{j})" %>
 																<%= q.label :option, each_option.opt_name, :value => each_option.opt_name %>
 															</span>
-														</h3>
 													</div>
 												<% end %>
 											<% end %>
