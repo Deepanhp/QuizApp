@@ -12,8 +12,13 @@
 
 ActiveRecord::Schema.define(version: 20220922095235) do
 
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+  end
 
   create_table "options", force: :cascade do |t|
     t.string "opt_name"
@@ -72,8 +77,11 @@ ActiveRecord::Schema.define(version: 20220922095235) do
     t.string "password_digest"
     t.boolean "admin", default: false
     t.boolean "active_session_exists"
+<<<<<<< Updated upstream
     t.string "otp_secret_key"
     t.string "phone"
+=======
+>>>>>>> Stashed changes
   end
 
   add_foreign_key "options", "questions"
