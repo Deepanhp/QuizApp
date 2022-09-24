@@ -24,7 +24,14 @@ footer ul {
 }
 
 .option-btn {
-	width: 100%;
+	width: 250px;
+    height: 100px;
+    display: inline-block;
+    white-space: normal;
+}
+
+.button-col {
+	max-width: 49%;
 }
 
 .star-icon {
