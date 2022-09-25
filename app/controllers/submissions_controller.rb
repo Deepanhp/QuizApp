@@ -15,7 +15,7 @@ class SubmissionsController < ApplicationController
 	    if @submission.save
 	        flash[:success] = "Quiz was submitted succesfully"
 	        total_score=0
-	        option_all = Option.where(question_id: Question.where(quiz_id: @submission.quiz_id)) #All options of the quiz
+	        option_all = Option.where(question_id: Quiz.find(@submission.quiz_id).questions.pluck(:id)) #All options of the quiz
 	        #Either collect all the options of a quiz or collect options for each question inside the next loop
 	        question_subs = QuestSubmission.where(submission_id: @submission.id) 
 	        question_subs.each do |q_sub|

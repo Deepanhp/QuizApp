@@ -38,7 +38,7 @@ class CategoriesController < ApplicationController
 
 	def show
 		@category = Category.find(params[:id])
-		quizzes = Quiz.where(id: Question.select("quiz_id").group(:quiz_id).having("count(id)>1")) #All quizzes with more than 1 question
+		quizzes = Quiz.where(id: QuestionsQuiz.select("quiz_id").group(:quiz_id).having("count(id)>1")) #All quizzes with more than 1 question
 		category_quiz = @category.quizzes #All quizzes of the category
 		@category_quizzes = []
 		category_quiz.each do |quiz|
