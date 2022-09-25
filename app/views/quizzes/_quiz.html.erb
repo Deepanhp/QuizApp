@@ -74,7 +74,7 @@
             <% elsif logged_in?  %><!--For logged in users-->
               <% already_submitted = (@submitted_quizzes.include? quiz) %>
               <% if already_submitted %>
-                <% quiz_score = @submissions.find_by_quiz_id(quiz.id).try(:score) %>
+                <% quiz_score = @submissions.where(quiz_id: quiz.id).last.try(:score) %>
               <% end %>
               <td><%= quiz.name %></td>
               <td><%= tscore %></td>
