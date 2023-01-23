@@ -1,6 +1,10 @@
 <h1 class="mt-3 text-center">Listing all Quizzes</h1>
+<% if logged_in? && current_user.admin? %>
+  <%= render 'quizAdmin', obj: @quizzes, type: "Quiz" %>
+<% elsif logged_in? %>
+  <%= render 'quizUser', obj: @quizzes, type: "Quiz" %>
+<%end%>
 
-<%= render 'quiz', obj: @quizzes, type: "Quiz" %>
 
 <% if logged_in? && current_user.admin? %><!--Show new quiz button only for admins-->
 	<%= link_to 'New Quiz', new_quiz_path, class: 'btn btn-primary btn-sm' %>
