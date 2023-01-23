@@ -1,4 +1,3 @@
-require 'spreadsheet'
 class QuizzesController < ApplicationController
 
   before_action :require_user, except: [:index]
@@ -48,6 +47,9 @@ class QuizzesController < ApplicationController
   end
 
   def show
+    if !current_user.admin? && current_user.quiz_already_taken(params[:id])
+      redirect_to quizzes_path
+    end
     @quiz = Quiz.find(params[:id])
     @questions = @quiz.questions #Questions of the quiz
     @question_all = @questions.paginate(page: params[:page], per_page: 5) #questions paginated
@@ -73,8 +75,14 @@ class QuizzesController < ApplicationController
     if !current_user.admin? && (@questions.length()<2 || quest_count < 2)
       redirect_to quizzes_path
     end
-    @submission = Submission.new 
-    @submission.quest_submissions.build #Nested form for quest_submissions
+
+    unless current_user.admin?
+      @submission = @quiz.submissions.find_by(user_id: current_user.id)
+      if @submission.blank?
+        @submission = @quiz.submissions.create(user_id: current_user.id)
+      end 
+      @submission.quest_submissions.build #Nested form for quest_submissions
+    end
 
     @question = Question.new
     if params.has_key?(:question_messages) #Check if error messages are passed and display them
@@ -86,7 +94,7 @@ class QuizzesController < ApplicationController
       @option_messages = params[:option_messages] 
     else
       @option_messages = ""
-    end  
+    end
   end
 
   def destroy
@@ -116,7 +124,7 @@ class QuizzesController < ApplicationController
   end
 
   def sync_quiz
-    Spreadsheet.run
+    UploadQuizOld.run
     flash[:success] = "Quiz synced successfully"
     redirect_to upload_quiz_path
   end
@@ -144,8 +152,6 @@ class QuizzesController < ApplicationController
   private
 
   def quiz_params
-
-    params.require(:quiz).permit(:name, category_ids: [])
-
+    params.require(:quiz).permit(:name, :duration, category_ids: [])
   end
 end

@@ -29,6 +29,10 @@
 		<h4>Total Score</h4>
 		<span class="display-3"><%= tscore %></span>
 	</div>
+
+	<div class="col-md-8 offset-md-2 col-sm-10 offset-sm-1 col-8 offset-1">
+		<%= render 'quizTimer', start_time: (@submission.created_at + @quiz.duration.minutes).strftime("%e %b %Y %I:%M:%S %p")%>
+	</div>
 </div>
 
 <div class="mr-4 ml-5">
@@ -38,7 +42,7 @@
 </div>
 
 
-<%= form_for @submission, :url => submissions_path, :method => :post do |f| %><!--Outer form of the nested forms for submission-->
+<%= form_for @submission, :html => {:name => 'quiz_open_form'} do |f| %><!--Outer form of the nested forms for submission-->
 
 	<h3 class="text-center mt-4">Questions:</h3>
 
@@ -103,11 +107,13 @@
 											<!--@option_all contains all options of the quiz-->
 											<% @option_all.each do |each_option| %>
 												<% if each_option.question_id == each_question.id %><!--Display options of this question-->
-													<div class="col-md-5 my-1 ml-1 text-center border border-light grey-back pt-1 button-col">
+													<div class="col-md-5 my-1 ml-1 text-center border border-light grey-back pt-1">
+														<h3>
 															<span class="btn btn-primary btn-sm option-btn"><!--Select option as radio button-->
 																<%= q.radio_button :option, each_option.opt_name, onClick: "toggleItemColor(#{j})" %>
 																<%= q.label :option, each_option.opt_name, :value => each_option.opt_name %>
 															</span>
+														</h3>
 													</div>
 												<% end %>
 											<% end %>
@@ -136,7 +142,6 @@
 	<div class="form-group text-center mt-4">
 		<%= f.submit "Submit", class: "btn btn-success" %>
 	</div>
-
 <% end %>
 
 <script>

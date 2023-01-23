@@ -11,6 +11,10 @@
 		    <h4 class="font-weight-normal"><%= f.label :quiz_name%></h5>
 		    <%= f.text_field :name, class: "form-control", placeholder: "Enter name for the quiz" %>
 		  </div>
+		  <div class="form-group">
+		    <h4 class="font-weight-normal"><%= f.label :quiz_duration%></h5>
+		    <%= f.text_field :duration, class: "form-control", placeholder: "Enter duration for the quiz(in minutes)" %>
+		  </div>
 		  <div class="form-group"><!--All categories as checkboxes-->
 		  	<%= f.collection_check_boxes :category_ids, Category.all, :id, :name do |cb| %>
 		  		<% cb.label(class: "checkbox-inline mr-3") {cb.check_box(class: "checkbox mr-1") + cb.text} %>

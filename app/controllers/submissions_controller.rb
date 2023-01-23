@@ -3,19 +3,15 @@ class SubmissionsController < ApplicationController
 	before_action :require_user
 
 	def new
-
 	end
 
-	def create
-		@submission = Submission.new(submission_params)
-		old_submission = Submission.where(user_id: @submission.user_id, quiz_id: @submission.quiz_id) #All old submission by the same user and for the same quiz
-		# old_submission.each do |old_sub|
-		# 	old_sub.destroy
-		# end
-	    if @submission.save
+	def update
+		@submission = Submission.find_by(id: params[:id])
+	    if @submission.update!(submission_params)
+			@submission.update(submitted: true)
 	        flash[:success] = "Quiz was submitted succesfully"
 	        total_score=0
-	        option_all = Option.where(question_id: Quiz.find(@submission.quiz_id).questions.pluck(:id)) #All options of the quiz
+	        option_all = Option.where(question_id: Question.where(quiz_id: @submission.quiz_id)) #All options of the quiz
 	        #Either collect all the options of a quiz or collect options for each question inside the next loop
 	        question_subs = QuestSubmission.where(submission_id: @submission.id) 
 	        question_subs.each do |q_sub|
@@ -41,12 +37,13 @@ class SubmissionsController < ApplicationController
 	    end
 	end
 
+	def create
+	end
+
 
 	private
 
     def submission_params
-
 		params.require(:submission).permit(:user_id, :quiz_id, quest_submissions_attributes: [:question_id, :option])
-
 	end
 end

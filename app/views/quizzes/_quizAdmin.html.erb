@@ -1,0 +1,77 @@
+<% if obj.present? %>
+
+  <table class="table table-hover mt-4">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Total Score</th>
+        <th scope="col">Duration</th>
+        <th scope="col">Number of questions</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% obj.each do |quiz| %>
+        <% @question_all = quiz.questions %>
+        <% @option_all = Option.where(question_id: @question_all.pluck(:id)) %>
+        <% quest_count=0 %>
+        <% @total_score = @question_all.sum(:score) %>
+        <% tscore=0 %>
+        <% count=0 %>
+        
+        <% @question_all.each do |each_question| %>
+          <% found = false %>
+          <% if @option_all.present? %>
+            <% @option_all.each do |each_option| %>
+              <% if each_option.question_id == each_question.id %>
+                <% count +=1 %>
+                <% if each_option.is_answer == true %>
+                  <% found = true %>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% end %>
+          <% if found==true && count>=2 %>
+            <% quest_count+=1 %>
+            <% tscore+=each_question.score %>
+          <% end %>
+        <% end %>
+        <% if quest_count>1 || (logged_in? && current_user.admin?) || type=="Submission" %><!--Display only valid questions except for admin and submissions-->
+          <tr>
+            <% if logged_in? && current_user.admin? %><!--For admins-->
+              <td onclick="window.location='<%= quiz_path(quiz) %>'" class="clickable"><%= quiz.name %></td>
+              <td onclick="window.location='<%= quiz_path(quiz) %>'" class="clickable"><%= @total_score %></td>
+              <% if type=="Submission" %>
+                <% @submissions.each do |sub| %><!--Display score of each submission-->
+                  <% if sub.quiz_id==quiz.id %>
+                    <td onclick="window.location='<%= quiz_path(quiz) %>'" class="clickable">
+                      <%= sub.score %>
+                    </td>
+                  <% end %>
+                <% end %>
+              <% end %>
+              <td><%= quiz.duration %> mins</td>
+              <td onclick="window.location='<%= quiz_path(quiz) %>'" class="clickable"><%= @question_all.length() %></td>
+
+              <td><%= link_to 'Edit Quiz', edit_quiz_path(quiz), class: "btn btn-info btn-sm" %>
+                  <%= link_to 'Delete Quiz', quiz_path(quiz), method: :delete, data: {confirm: "Are you sure?"}, class: "btn btn-danger btn-sm ml-4" %>
+                  <% if @question_all.length()<2 %>
+                    <span class="float-right alert-icon font-weight-bold pr-4">
+                      <%= fa_icon "exclamation", class: "fa-2x" %>
+                    </span>
+                  <% end %>
+              </td>
+            <% elsif !logged_in?  %><!--For not logged in users-->
+              <td><%= quiz.name %></td>
+              <td><%= tscore %></td>
+              <td><%= quest_count %></td>
+              <td></td>
+
+            <% end %>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+
+<% end %>
