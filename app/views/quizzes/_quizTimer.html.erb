@@ -48,8 +48,8 @@ var x = setInterval(function() {
   if (distance < 0) {
     clearInterval(x);
     document.getElementById("demo").innerHTML = "EXPIRED";
-    // alert("Your test time exhausted. Test will be submitted automattically");
-    // document.getElementsByName("quiz_open_form")[0].submit();
+    alert("Your test time exhausted. Test will be submitted automattically");
+    document.getElementsByName("quiz_open_form")[0].submit();
   }
 }, 1000);
 </script>
