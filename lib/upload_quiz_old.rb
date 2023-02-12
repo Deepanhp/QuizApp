@@ -1,4 +1,4 @@
-class UploadQuizOld
+module UploadQuizOld
 
 	#constants
 	DEFAULT_SCORE = 1
